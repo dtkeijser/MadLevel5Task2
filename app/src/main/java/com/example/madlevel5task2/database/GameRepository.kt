@@ -21,4 +21,8 @@ class GameRepository (context: Context){
     suspend fun deleteHistory(){
         return gameDao.deleteAll()
     }
+
+    fun getGames() = gameDao.getGames()
+
+    suspend fun delete(game: Game) = gameDao.delete(game)
 }
