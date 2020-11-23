@@ -5,11 +5,12 @@ import java.util.*
 
 class Converters {
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date?{
-        return value?.let { Date(it) }
+    fun calendarFromTimestamp(value: Long?): Calendar? {
+        return value?.let { Calendar.getInstance().apply { time = Date(value) } }
     }
+
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+    fun calendarToTimestamp(calendar: Calendar?): Long? {
+        return calendar?.time?.time
     }
 }

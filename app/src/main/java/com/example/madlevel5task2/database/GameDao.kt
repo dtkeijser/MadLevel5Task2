@@ -11,10 +11,12 @@ import com.example.madlevel5task2.model.Game
 interface GameDao {
 
     @Query("SELECT * FROM gameTable ORDER BY `release` ")
-    fun getGames():LiveData<Game?>
+    fun getGames():LiveData<List<Game>>
 
     @Insert
     suspend fun insert(game: Game)
+    @Insert
+    suspend fun insertGames(game: List<Game>)
 
     @Delete
     suspend fun delete(game: Game)

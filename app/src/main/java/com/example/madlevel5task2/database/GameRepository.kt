@@ -18,6 +18,10 @@ class GameRepository (context: Context){
         return gameDao.insert(game)
     }
 
+    suspend fun insertGames(games:List<Game>){
+        return gameDao.insertGames(games)
+    }
+
     suspend fun deleteHistory(){
         return gameDao.deleteAll()
     }

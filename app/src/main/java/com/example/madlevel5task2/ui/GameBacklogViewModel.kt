@@ -17,17 +17,18 @@ class GameBacklogViewModel(application: Application) : AndroidViewModel(applicat
 
     val gameBacklog = gameRepository.getGames()
 
-    val error = MutableLiveData<String>()
-    val success = MutableLiveData<Boolean>()
+    val successDeleteGameBacklog = MutableLiveData<List<Game>>()
+    val successDeleteGame = MutableLiveData<Game>()
 
 
     fun deleteGameBacklog() {
+        val games = gameBacklog.value
         mainScope.launch {
 
             withContext(Dispatchers.IO) {
                 gameRepository.deleteHistory()
             }
-
+            successDeleteGameBacklog.value = games
         }
     }
 
@@ -35,6 +36,21 @@ class GameBacklogViewModel(application: Application) : AndroidViewModel(applicat
         mainScope.launch {
             withContext(Dispatchers.IO) {
                 gameRepository.delete(game)
+            }
+            successDeleteGame.value = game // Used for undoing (EXTRA)
+        }
+    }
+
+    fun addGameBacklog(games: List<Game>) {
+        mainScope.launch {
+            gameRepository.insertGames(games)
+        }
+    }
+
+    fun addGame(game: Game) {
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                gameRepository.insertGame(game)
             }
         }
     }

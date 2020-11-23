@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.madlevel5task2.R
 import com.example.madlevel5task2.model.Game
@@ -19,11 +22,12 @@ import java.util.*
  */
 class AddFragment : Fragment() {
 
+
     private val viewModel: AddViewModel by viewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add, container, false)
@@ -31,33 +35,35 @@ class AddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fab_save.setOnClickListener {onAddGame()}
-
-
+        initViews()
+        initViewModel()
     }
 
-    private fun onAddGame(){
-        val title = input_title.text.toString()
-        val platform = input_platform.text.toString()
-        val day = input_day.text.toString().toInt()
-        val month = input_month.text.toString().toInt()
-        val year = input_year.text.toString().toInt()
-//        val date = Calendar.getInstance();
-//        date.set(year, month-1, day);
+    private fun initViews() {
+        fab_save.setOnClickListener {
+
+            viewModel.addGame(
+                input_title.text.toString(),
+                input_platform.text.toString(),
+                input_day.text.toString(),
+                input_month.text.toString(),
+                input_year.text.toString()
+            )
+
+        }
+    }
+
+    private fun initViewModel() {
 
 
 
+        viewModel.error.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+        })
 
-//            //set the data as fragmentResult, we are listening for REQ_REMINDER_KEY in RemindersFragment!
-//            setFragmentResult(REQ_REMINDER_KEY, bundleOf(Pair(BUNDLE_REMINDER_KEY, reminderText)))
-//            viewModel.insertGame(Game(title,platform, date))
-//
-            //"pop" the backstack, this means we destroy
-            //this fragment and go back to the RemindersFragment
+
+        viewModel.success.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             findNavController().popBackStack()
-
-
-
-
+        })
     }
 }

@@ -29,6 +29,7 @@ abstract class GameRoomDatabase : RoomDatabase() {
                                 GameRoomDatabase::class.java,
                                 DATABASE_NAME
                             )
+
                                 .build()
                     }
                 }

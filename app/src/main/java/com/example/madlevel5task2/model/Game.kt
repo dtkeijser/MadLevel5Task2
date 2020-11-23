@@ -16,7 +16,7 @@ data class Game (
     @ColumnInfo(name = "platform")
     var platform: String,
     @ColumnInfo(name = "release")
-    var release: Date,
+    var release: Calendar,
 
 
     @ColumnInfo
